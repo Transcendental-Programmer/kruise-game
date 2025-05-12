@@ -27,6 +27,22 @@ import (
 	"strconv"
 )
 
+// Add high-risk ports that may be intercepted by internet operators
+var HighRiskPorts = []int32{
+	42, 135, 137, 138, 139, 445, 593, 1025, 1434, 1068,
+	3127, 3128, 3129, 3130, 4444, 5554, 5800, 5900, 9996,
+}
+
+// IsPortSafe checks if a port is not in the high-risk ports list
+func IsPortSafe(port int32) bool {
+	for _, highRiskPort := range HighRiskPorts {
+		if port == highRiskPort {
+			return false
+		}
+	}
+	return true
+}
+
 type NetworkManager struct {
 	pod             *corev1.Pod
 	networkType     string
